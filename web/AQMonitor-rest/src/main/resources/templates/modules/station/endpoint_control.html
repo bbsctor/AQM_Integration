@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>终端控制</title>
+<#include "/header.html">
+
+<script src="${request.contextPath}/statics/js/laydate/laydate.js"></script>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+  <div v-show="showList">
+
+	<table class="table table-striped table-bordered bootstrap-datatable datatable" >
+		  <thead>
+			  <tr>
+				  <th>监测站号</th>
+				  <th>命令</th>
+				  <th>参数值</th>
+				  <th>发送指令</th>
+			  </tr>
+		  </thead>   
+		  <tbody>
+			<tr>
+				<td>
+			     
+			     <select class="form-control"  v-model="q.mn_name" @keyup.enter="setInterval">
+			        <option>88888880000001</option>
+			        <option>88888880000002</option>
+			        <option>88888880000003</option>
+			        <option>88888880000004</option>
+			      </select>
+				</td>
+				
+				<td class="center">
+					<input type="text" class="form-control" value="设置上报时间间隔" readonly="readonly" @keyup.enter="setInterval"/>
+				</td>
+
+				<td class="center">
+					<input type="text" class="form-control" onkeyup="value=value.replace(/[^\d]/g,'')" 
+        	v-model="q.Para" @keyup.enter="setInterval" placeholder="请输入数字(秒)">
+				</td>
+
+				<td class="center">
+					<a class="btn btn-primary" @click="setInterval">发送指令</a>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+			      <select class="form-control"  v-model="q.mn_name" @keyup.enter="setTime">
+			        <option>88888880000001</option>
+			        <option>88888880000002</option>
+			        <option>88888880000003</option>
+			        <option>88888880000004</option>
+			      </select>
+				</td>
+				
+				<td class="center">
+					<input type="text" class="form-control" value="设置现场机时间" readonly="readonly" @keyup.enter="setTime"/>
+				</td>
+
+				<td class="center">
+					<input type="text" class="form-control" placeholder="2018-07-25 00:00:00" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" >
+				</td>
+
+				<td class="center">
+					<a class="btn btn-primary" @click="setTime">发送指令</a>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+			      <select class="form-control" v-model="q.mn_name" @keyup.enter="getTime" >
+			        <option>88888880000001</option>
+			        <option>88888880000002</option>
+			        <option>88888880000003</option>
+			        <option>88888880000004</option>
+			      </select>
+				</td>
+				
+				<td class="center">
+					<input type="text" class="form-control" value="获取现场机时间" readonly="readonly" @keyup.enter="getTime"/>
+				</td>
+
+				<td class="center">
+					<input type="text" class="form-control" onkeyup="value=value.replace(/[^\d]/g,'')" 
+        	v-model="q.Para" @keyup.enter="setTime" placeholder="NULL">
+				</td>
+
+				<td class="center">
+					<a class="btn btn-primary" @click="getTime">发送指令</a>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+			      <select class="form-control" v-model="q.mn_name" @keyup.enter="startGather">
+			        <option>88888880000001</option>
+			        <option>88888880000002</option>
+			        <option>88888880000003</option>
+			        <option>88888880000004</option>
+			      </select>
+				</td>
+				
+				<td class="center">
+					<input type="text" class="form-control" value="开始采集实时数据" readonly="readonly" @keyup.enter="startGather"/>
+				</td>
+
+				<td class="center">
+					<input type="text" class="form-control" onkeyup="value=value.replace(/[^\d]/g,'')"  v-model="q.Para" @keyup.enter="startGather" placeholder="NULL">
+				</td>
+
+				<td class="center">
+					<a class="btn btn-primary" @click="startGather">发送指令</a>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+			      <select class="form-control" v-model="q.mn_name" @keyup.enter="stopGather">
+			        <option>88888880000001</option>
+			        <option>88888880000002</option>
+			        <option>88888880000003</option>
+			        <option>88888880000004</option>
+			      </select>
+				</td>
+				
+				<td class="center">
+					<input type="text" class="form-control" value="停止采集实时数据" readonly="readonly" @keyup.enter="stopGather"/>
+				</td>
+
+				<td class="center">
+					<input type="text" class="form-control" v-model="q.Para" @keyup.enter="stopGather" placeholder="NULL">
+				</td>
+
+				<td class="center">
+					<a class="btn btn-primary" @click="stopGather">发送指令</a>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+			      <select class="form-control" v-model="q.mn_name" @keyup.enter="remoteCalibration">
+			        <option>88888880000001</option>
+			        <option>88888880000002</option>
+			        <option>88888880000003</option>
+			        <option>88888880000004</option>
+			      </select>
+				</td>
+				
+				<td class="center">
+					<input type="text" class="form-control" value="远程校准" readonly="readonly" @keyup.enter="remoteCalibration"/>
+				</td>
+
+				<td class="center">
+					<input type="text" class="form-control" v-model="q.Para" @keyup.enter="remoteCalibration" placeholder="NULL">
+				</td>
+
+				<td class="center">
+					<a class="btn btn-primary" @click="remoteCalibration">发送指令</a>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+			      <select class="form-control" v-model="q.mn_name" @keyup.enter="remoteCalibration">
+			        <option>88888880000001</option>
+			        <option>88888880000002</option>
+			        <option>88888880000003</option>
+			        <option>88888880000004</option>
+			      </select>
+				</td>
+				
+				<td class="center">
+					<input type="text" class="form-control" value="设置现场机访问密码" readonly="readonly" @keyup.enter="remoteCalibration"/>
+				</td>
+
+				<td class="center">
+					<input type="text" class="form-control" v-model="q.Para" @keyup.enter="remoteCalibration" placeholder="请输入密码">
+				</td>
+
+				<td class="center">
+					<a class="btn btn-primary" @click="remoteCalibration">发送指令</a>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+			      <select class="form-control" v-model="q.mn_name" @keyup.enter="remoteCalibration">
+			        <option>88888880000001</option>
+			        <option>88888880000002</option>
+			        <option>88888880000003</option>
+			        <option>88888880000004</option>
+			      </select>
+				</td>
+				
+				<td class="center">
+					<input type="text" class="form-control" value="获取设备运行状态数据" readonly="readonly" @keyup.enter="remoteCalibration"/>
+				</td>
+
+				<td class="center">
+					<input type="text" class="form-control" v-model="q.Para" @keyup.enter="remoteCalibration" placeholder="NULL">
+				</td>
+
+				<td class="center">
+					<a class="btn btn-primary" @click="remoteCalibration">发送指令</a>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+			      <select class="form-control" v-model="q.mn_name" @keyup.enter="remoteCalibration">
+			        <option>88888880000001</option>
+			        <option>88888880000002</option>
+			        <option>88888880000003</option>
+			        <option>88888880000004</option>
+			      </select>
+				</td>
+				
+				<td class="center">
+					<input type="text" class="form-control" value="停止查看设备运行状态" readonly="readonly" @keyup.enter="remoteCalibration"/>
+				</td>
+
+				<td class="center">
+					<input type="text" class="form-control" v-model="q.Para" @keyup.enter="remoteCalibration" placeholder="NULL">
+				</td>
+
+				<td class="center">
+					<a class="btn btn-primary" @click="remoteCalibration">发送指令</a>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+			      <select class="form-control" v-model="q.mn_name" @keyup.enter="remoteCalibration">
+			        <option>88888880000001</option>
+			        <option>88888880000002</option>
+			        <option>88888880000003</option>
+			        <option>88888880000004</option>
+			      </select>
+				</td>
+				
+				<td class="center">
+					<input type="text" class="form-control" value="获取污染物小时数据" readonly="readonly" @keyup.enter="remoteCalibration"/>
+				</td>
+
+				<td class="center">
+					<input type="text" class="form-control" v-model="q.Para" @keyup.enter="remoteCalibration" placeholder="NULL">
+				</td>
+
+				<td class="center">
+					<a class="btn btn-primary" @click="remoteCalibration">发送指令</a>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+			      <select class="form-control" v-model="q.mn_name" @keyup.enter="remoteCalibration">
+			        <option>88888880000001</option>
+			        <option>88888880000002</option>
+			        <option>88888880000003</option>
+			        <option>88888880000004</option>
+			      </select>
+				</td>
+				
+				<td class="center">
+					<input type="text" class="form-control" value="获取污染物日历史数据" readonly="readonly" @keyup.enter="remoteCalibration"/>
+				</td>
+
+				<td class="center">
+					<input type="text" class="form-control" v-model="q.Para" @keyup.enter="remoteCalibration" placeholder="NULL">
+				</td>
+
+				<td class="center">
+					<a class="btn btn-primary" @click="remoteCalibration">发送指令</a>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+			      <select class="form-control" v-model="q.mn_name" @keyup.enter="remoteCalibration">
+			        <option>88888880000001</option>
+			        <option>88888880000002</option>
+			        <option>88888880000003</option>
+			        <option>88888880000004</option>
+			      </select>
+				</td>
+				
+				<td class="center">
+					<input type="text" class="form-control" value="设置采样周期" readonly="readonly" @keyup.enter="remoteCalibration"/>
+				</td>
+
+				<td class="center">
+					<input type="text" class="form-control" v-model="q.Para" @keyup.enter="remoteCalibration" placeholder="请输入数字">
+				</td>
+
+				<td class="center">
+					<a class="btn btn-primary" @click="remoteCalibration">发送指令</a>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+			      <select class="form-control" v-model="q.mn_name" @keyup.enter="remoteCalibration">
+			        <option>88888880000001</option>
+			        <option>88888880000002</option>
+			        <option>88888880000003</option>
+			        <option>88888880000004</option>
+			      </select>
+				</td>
+				
+				<td class="center">
+					<input type="text" class="form-control" value="提取设备唯一标识" readonly="readonly" @keyup.enter="remoteCalibration"/>
+				</td>
+
+				<td class="center">
+					<input type="text" class="form-control" v-model="q.Para" @keyup.enter="remoteCalibration" placeholder="NULL">
+				</td>
+
+				<td class="center">
+					<a class="btn btn-primary" @click="remoteCalibration">发送指令</a>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+			      <select class="form-control" v-model="q.mn_name" @keyup.enter="remoteCalibration">
+			        <option>88888880000001</option>
+			        <option>88888880000002</option>
+			        <option>88888880000003</option>
+			        <option>88888880000004</option>
+			      </select>
+				</td>
+				
+				<td class="center">
+					<input type="text" class="form-control" value="提取现场机日志信息" readonly="readonly" @keyup.enter="remoteCalibration"/>
+				</td>
+
+				<td class="center">
+					<input type="text" class="form-control" v-model="q.Para" @keyup.enter="remoteCalibration" placeholder="NULL">
+				</td>
+
+				<td class="center">
+					<a class="btn btn-primary" @click="remoteCalibration">发送指令</a>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+			      <select class="form-control" v-model="q.mn_name" @keyup.enter="remoteCalibration">
+			        <option>88888880000001</option>
+			        <option>88888880000002</option>
+			        <option>88888880000003</option>
+			        <option>88888880000004</option>
+			      </select>
+				</td>
+				
+				<td class="center">
+					<input type="text" class="form-control" value="设置现场机参数" readonly="readonly" @keyup.enter="remoteCalibration"/>
+				</td>
+
+				<td class="center">
+					<input type="text" class="form-control" v-model="q.Para" @keyup.enter="remoteCalibration" placeholder="请输入参数值">
+				</td>
+
+				<td class="center">
+					<a class="btn btn-primary" @click="remoteCalibration">发送指令</a>
+				</td>
+				
+			</tr>
+
+			
+			
+		  </tbody>
+	  </table>            
+</div>
+
+</div>
+
+
+
+<script src="${request.contextPath}/statics/js/modules/station/endpointcontrol.js?_${.now?long}"></script>
+
+</body>
+</html>

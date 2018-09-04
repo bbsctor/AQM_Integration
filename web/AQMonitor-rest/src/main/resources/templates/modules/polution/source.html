@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>溯源分析</title>
+<#include "/header.html">
+
+</head>
+<body>
+<style type="text/css">
+
+
+
+#Content{
+	 width:1840px;
+    height:340px;
+	 margin:100px auto;
+    /*此处对容器设置了高度，一般不建议对容器设置高度，一般使用overflow:auto;属性设置容器根据内容自适应高度，如果不指定高度或不设置自适应高度，容器将默认为1个字符高度，容器下方的布局元素（footer）设置margin-top:属性将无效*/
+   
+    background:#FFF;
+     
+}
+#Content-1{
+    height:300px;
+    width:540px;
+    margin:20px;/*设置元素跟其他元素的距离为20像素*/
+    float:left;/*设置浮动，实现多列效果，div+Css布局中很重要的*/
+    background:#FBFDD0;
+}
+#Content-2{
+    height:300px;
+    width:540px;
+    margin:20px;/*设置元素跟其他元素的距离为20像素*/
+    float:left;/*设置浮动，实现多列效果，div+Css布局中很重要的*/
+    background:#E6FFE6;
+}
+#Content-3{
+    height:300px;
+    width:540px;
+    margin:20px;/*设置元素跟其他元素的距离为20像素*/
+    float:left;/*设置浮动，实现多列效果，div+Css布局中很重要的*/
+    background:#E8FFFF;
+}
+/*注：Content-Left和Content-Main元素是Content元素的子元素，两个元素使用了float:left;设置成两列，这个两个元素的宽度和这个两个元素设置的padding、margin的和一定不能大于父层Content元素的宽度，否则设置列将失败*/
+#Footer{
+    height:300px;
+    background:#FFF;
+    margin:20px;
+}
+.Clear{
+    clear:both;
+}
+</style>
+
+</head>
+ 
+<body>
+
+    
+    <div id="Content">
+        <div id="Content-1"></div>
+        <script >
+        var dom = document.getElementById("Content-1");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+var weatherIcons = {
+    'Sunny': './data/asset/img/weather/sunny_128.png',
+    'Cloudy': './data/asset/img/weather/cloudy_128.png',
+    'Showers': './data/asset/img/weather/showers_128.png'
+};
+
+option = {
+    title: {
+        text: '空气质量占比分布图',
+        subtext: 'www.sitankj.com',
+        left: 'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    legend: {
+        // orient: 'vertical',
+        // top: 'middle',
+        bottom: 10,
+        left: 'center',
+        data: ['优', '良','轻度污染','重度污染']
+    },
+    series : [
+        {
+            type: 'pie',
+            radius : '65%',
+            center: ['50%', '50%'],
+            selectedMode: 'single',
+            data:[
+                {
+                    value:1548,
+                    name: '重度污染',
+                    label: {
+                        normal: {
+                            formatter: [
+                                '{title|{b}}{abg|}',
+                                '  {weatherHead|污染天数}{rateHead|占比}',
+                                '{hr|}',
+                                '  {Sunny|}{value|202}{rate|55.3%}',
+                                '  {Cloudy|}{value|142}{rate|38.9%}',
+                                '  {Showers|}{value|21}{rate|5.8%}'
+                            ].join('\n'),
+                            backgroundColor: '#eee',
+                            borderColor: '#777',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            rich: {
+                                title: {
+                                    color: '#eee',
+                                    align: 'center'
+                                },
+                                abg: {
+                                    backgroundColor: '#333',
+                                    width: '100%',
+                                    align: 'right',
+                                    height: 25,
+                                    borderRadius: [4, 4, 0, 0]
+                                },
+                                Sunny: {
+                                    height: 30,
+                                    align: 'left',
+                                    backgroundColor: {
+                                        image: weatherIcons.Sunny
+                                    }
+                                },
+                                Cloudy: {
+                                    height: 30,
+                                    align: 'left',
+                                    backgroundColor: {
+                                        image: weatherIcons.Cloudy
+                                    }
+                                },
+                                Showers: {
+                                    height: 30,
+                                    align: 'left',
+                                    backgroundColor: {
+                                        image: weatherIcons.Showers
+                                    }
+                                },
+                                weatherHead: {
+                                    color: '#333',
+                                    height: 24,
+                                    align: 'left'
+                                },
+                                hr: {
+                                    borderColor: '#777',
+                                    width: '100%',
+                                    borderWidth: 0.5,
+                                    height: 0
+                                },
+                                value: {
+                                    width: 20,
+                                    padding: [0, 20, 0, 30],
+                                    align: 'left'
+                                },
+                                valueHead: {
+                                    color: '#333',
+                                    width: 20,
+                                    padding: [0, 20, 0, 30],
+                                    align: 'center'
+                                },
+                                rate: {
+                                    width: 40,
+                                    align: 'right',
+                                    padding: [0, 10, 0, 0]
+                                },
+                                rateHead: {
+                                    color: '#333',
+                                    width: 40,
+                                    align: 'center',
+                                    padding: [0, 10, 0, 0]
+                                }
+                            }
+                        }
+                    }
+                },
+                {value:535, name: '良'},
+               
+                 {value:510, name: '优'},
+                {value:735,  name: '轻度污染优'}
+            ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+};
+;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+
+
+
+
+
+
+
+
+
+
+        <div id="Content-2">
+        <script >
+
+    var dom = document.getElementById("Content-2");
+var myChart = echarts.init(dom);
+
+var app = {};
+option = null;
+var weatherIcons = {
+    'Sunny': './data/asset/img/weather/sunny_128.png',
+    'Cloudy': './data/asset/img/weather/cloudy_128.png',
+    'Showers': './data/asset/img/weather/showers_128.png'
+};
+
+option = {
+
+    title: {
+        text: '首要污染物占比分布图',
+        subtext: 'www.sitankj.com',
+        left: 'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    legend: {
+        // orient: 'vertical',
+        // top: 'middle',
+        bottom: 10,
+        left: 'center',
+        data: ['SO2', 'CO','O3']
+    },
+    series : [
+        {
+            type: 'pie',
+            radius : '65%',
+            center: ['50%', '50%'],
+            selectedMode: 'single',
+            data:[
+                {
+                    value:1548,
+                    name: 'SO2',
+                    label: {
+                        normal: {
+                            formatter: [
+                                '{title|{b}}{abg|}',
+                                '  {weatherHead|含量}{rateHead|占比}',
+                                '{hr|}',
+                                '  {Sunny|}{value|202}{rate|55.3%}',
+                                '  {Cloudy|}{value|142}{rate|38.9%}',
+                                '  {Showers|}{value|21}{rate|5.8%}'
+                            ].join('\n'),
+                            backgroundColor: '#555',
+                            borderColor: '#777',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            rich: {
+                                title: {
+                                    color: '#eee',
+                                    align: 'center'
+                                },
+                                abg: {
+                                    backgroundColor: '#333',
+                                    width: '100%',
+                                    align: 'right',
+                                    height: 25,
+                                    borderRadius: [4, 4, 0, 0]
+                                },
+                                Sunny: {
+                                    height: 30,
+                                    align: 'left',
+                                    backgroundColor: {
+                                        image: weatherIcons.Sunny
+                                    }
+                                },
+                                Cloudy: {
+                                    height: 30,
+                                    align: 'left',
+                                    backgroundColor: {
+                                        image: weatherIcons.Cloudy
+                                    }
+                                },
+                                Showers: {
+                                    height: 30,
+                                    align: 'left',
+                                    backgroundColor: {
+                                        image: weatherIcons.Showers
+                                    }
+                                },
+                                weatherHead: {
+                                    color: '#333',
+                                    height: 24,
+                                    align: 'left'
+                                },
+                                hr: {
+                                    borderColor: '#777',
+                                    width: '100%',
+                                    borderWidth: 0.5,
+                                    height: 0
+                                },
+                                value: {
+                                    width: 20,
+                                    padding: [0, 20, 0, 30],
+                                    align: 'left'
+                                },
+                                valueHead: {
+                                    color: '#333',
+                                    width: 20,
+                                    padding: [0, 20, 0, 30],
+                                    align: 'center'
+                                },
+                                rate: {
+                                    width: 40,
+                                    align: 'right',
+                                    padding: [0, 10, 0, 0]
+                                },
+                                rateHead: {
+                                    color: '#333',
+                                    width: 40,
+                                    align: 'center',
+                                    padding: [0, 10, 0, 0]
+                                }
+                            }
+                        }
+                    }
+                },
+                {value:535, name: 'CO'},
+                {value:510, name: 'O3'},
+                
+            ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+};
+;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+        </script>
+        </div>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div id="Content-3">
+        <script >
+
+    var dom = document.getElementById("Content-3");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+var weatherIcons = {
+    'Sunny': './data/asset/img/weather/sunny_128.png',
+    'Cloudy': './data/asset/img/weather/cloudy_128.png',
+    'Showers': './data/asset/img/weather/showers_128.png'
+};
+
+option = {
+    title: {
+        text: '首要污染地区统计',
+        subtext: 'www.sitankj.com',
+        left: 'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    legend: {
+        // orient: 'vertical',
+        // top: 'middle',
+        bottom: 10,
+        left: 'center',
+        data: ['安康', '咸阳','宝鸡','榆林','延安']
+    },
+    series : [
+        {
+            type: 'pie',
+            radius : '65%',
+            center: ['50%', '50%'],
+            selectedMode: 'single',
+            data:[
+                {
+                    value:1548,
+                    name: '安康',
+                   
+                },
+                {value:535, name: '咸阳'},
+                {value:510, name: '延安'},
+                {value:634, name: '宝鸡'},
+                {value:735, name: '榆林'}
+            ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+};
+;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+
+        </script>
+        </div>
+    </div>
+    
+    <div class="Clear"><!--如何你上面用到float,下面布局开始前最好清除一下。--></div>
+ 
+<script src="${request.contextPath}/statics/libs/echarts.js"></script>
+
+</body>
+</html>

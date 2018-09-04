@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>月报表</title>
+<#include "/header.html">
+
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn">
+			<div class="form-group col-sm-2">
+				<select class="form-control" id="MN" v-model="q.mn" v-on:focus="getStationInfo">
+					
+				    <option v-for="option in q.stationInfos" v-bind:value="option.siteNum">
+					    {{ option.siteNum }}
+  					</option>
+			    </select>
+			</div>
+			
+			<div class="form-group col-sm-2">
+				<input type="text" class="laydate-icon" id="start" v-model="q.begin" v-on:focus="getBegin" placeholder="  起始时间">
+			</div>
+			<div class="form-group col-sm-2">
+				<input type="text" class="laydate-icon" id="end" v-model="q.end" v-on:focus="getEnd" placeholder="  终止时间">
+			</div>
+			
+			<a class="btn btn-default" @click="query">查询</a>
+			
+			
+			<a class="btn btn-primary" ><i class="fa  fa-pencil-square-o"></i>&nbsp;统计</a>
+			
+			<a class="btn btn-primary"><i class="fa fa-book"></i>&nbsp;导出</a>
+			
+			<a class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;打印</a>
+			
+		</div>
+		<center><h2>西安市空气质量信息月报表</h2></center>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+</div>
+
+<script src="${request.contextPath}/statics/js/modules/history/historydata.js?_${.now?long}"></script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/laydate/laydate.js"></script>
+</body>
+</html>

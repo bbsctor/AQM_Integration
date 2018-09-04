@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>趋势预警</title>
+<#include "/header.html">
+
+</head>
+<body>
+
+		 <div id="main" style="height:400px"></div>
+    <!-- ECharts单文件引入 -->
+    <script src="${request.contextPath}/statics/libs/echarts.js"></script>
+    <script type="text/javascript">
+	
+        // 基于准备好的dom，初始化echarts图表
+        var myChart = echarts.init(document.getElementById('main')); 
+		
+       var colors = ['#5793f3', '#d14a61', '#675bba']; 
+	   
+	   
+        var option = {
+		color: colors,
+		backgroundColor:'#fff',		//背景色
+        title : {
+        text: '空气质量影响因子趋势',
+        subtext: 'www.sitankj.com',
+		x:'center'					//标题居中
+    },
+	dataZoom:{ show:'true',
+			   type:'inside',
+	//moveOnMouseMove:false,
+	yAxisIndex:[0,1,2],
+	xAxisIndex:0,
+	},
+	grid: {
+        right: '20%',
+		y2:'140px'
+    },
+    tooltip : {
+        trigger: 'axis',
+		 axisPointer: {
+            type: 'cross'
+        }
+    },
+    legend: {
+        data:['SO2','CO','NO2','O3','PM2.5','PM10','TVOC'],
+		orient:'horizontal',			//图例垂直布局
+		x:'center',	
+		y:'350px',				//bottoom最低端
+		selected:{
+			//'SO2':false,
+			}
+    },
+    toolbox: {
+        show : true,				//显示工具箱
+        feature : {
+            mark : {show: true},	//辅助线标志
+            dataView : {show: true, readOnly: false,
+			optionToContent : function(opt) {
+                                //console.info(opt);
+                                var axisData = opt.xAxis[0].data;
+                                var series = opt.series;
+                                var tdHeaders = '<td>时间</td>'; //表头
+                                series.forEach(function(item) {
+                                    tdHeaders += '<td style="border: 2px solid black; ">' + item.name + '</td>'; //组装表头
+                                });
+                                var table = '<div class="table-responsive"><table class="table table-bordered table-striped table-hover" style="width:100%; height:150px; margin-top:10px;border-collapse:collapse;font-size:20px;text-align:center; border:2px solid black;"><tbody><tr >' + tdHeaders + '</tr>';
+                                var tdBodys = ''; //数据
+                                for ( i = 0, l = axisData.length; i < l; i++) {
+                                    for (j = 0; j < series.length; j++) {
+                                        tdBodys += '<td style="margin-left:100px; padding: 0 100px ;border-collapse:collapse;font-size:20px;text-align:center; border:2px solid black;">' + series[j].data[i] + '</td>'; //组装表数据
+                                    }
+                                    table += '<tr><td style="padding: 0 100px ; border:2px solid black;">' + axisData[i] + '</td>' + tdBodys + '</tr>';
+                                    tdBodys = '';
+                                }
+    
+                                table += '</tbody></table></div>';
+                                return table;
+                            }
+			},//数据视图
+            //magicType : {show: true, type: [ 'line', 'bar', 'stack', 'tiled']}, //动态类型切换，支持直角系下的折线图、柱状图、堆积、平铺转换，
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+	
+    calculable : true,		//是否启用拖拽重计算特性
+	
+    xAxis : [
+        {
+            type : 'category', //坐标轴类型,横轴默认为类目型'category'
+			axisTick : {
+					show : true,
+					splitLine : {
+					show : true,
+					
+				},
+					
+				},
+			
+			axisLabel: {  
+   			
+					interval : 0,
+   				rotate:40 ,
+				
+			}, 
+            data : ['2017-01-01 00:00:00','2017-01-02 00:00:00','2017-01-03 00:00:00','2017-01-04 00:00:00',
+            '2017-01-05 00:00:00','2017-01-06 00:00:00','2017-01-07 00:00:00','2017-01-08 00:00:00','2017-01-09 00:00:00',
+            '2017-01-10 00:00:00','2017-01-11 00:00:00','2017-01-12 00:00:00']
+        }
+    ],
+    yAxis : [
+        {
+			splitArea : {
+					show : true
+				},
+            type: 'value',
+            name: 'SO2、NO2、O3、TVOC',
+            min: 0,
+            max: 300,
+            position: 'left',
+            axisLine: {
+                lineStyle: {
+                    color: colors[0]
+                }
+            },
+            axisLabel: {
+                formatter: '{value} ppb'
+            }
+        },
+        {
+            type: 'value',
+            name: 'CO',
+            min: 0,
+            max: 1,
+            position: 'right',
+            offset: 80,
+            axisLine: {
+                lineStyle: {
+                    color: colors[1]
+                }
+            },
+            axisLabel: {
+                formatter: '{value} ppm'
+            }
+        },
+        {
+            type: 'value',
+            name: 'PM2.5、PM10',
+            min: 0,
+            max: 80,
+            position: 'right',
+            axisLine: {
+                lineStyle: {
+                    color: colors[2]
+                }
+            },
+            axisLabel: {
+                formatter: '{value} μg/m3'
+            }
+        }
+    ],
+	
+    series : [
+	
+					
+        {
+            name:'SO2',
+            type:'line',
+			smooth:'true',
+			itemStyle: {   
+                //通常情况下：
+                normal:{  
+　　　　　　　　　　　　//每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                    color: 'rgb(195,229,235)'
+                }
+                
+            },
+            data:[32.6, 20.0, 6.4, 3.3, 25.6, 46.7, 35.6, 22.2, 32.6, 20.0, 6.4, 3.3],
+        },
+		 {
+            name:'CO',
+             type:'line',
+			itemStyle: {   
+                //通常情况下：
+                normal:{  
+　　　　　　　　　　　　//每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                    color: 'rgb(25,46,94)'
+                }
+               
+            },
+			yAxisIndex: 1,
+            
+            data:[0.44, 0.33, 0.46, 0.57, 0.46, 0.56, 0.47, 0.36, 0.49, 0.50, 0.24, 0.47],
+           
+        },
+		 {
+            name:'NO2',
+             type:'line',
+			itemStyle: {   
+                //通常情况下：
+                normal:{  
+　　　　　　　　　　　　//每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                    color: 'rgb(195,229,0)'
+                }
+                
+            },
+            data:[62.0, 54.9, 70.0, 53.2, 55.6, 76.7, 56.4, 63.3, 55.6, 76.7, 55.6, 66.4],
+            
+        },
+        {
+            name:'O3',
+            type:'line',
+			itemStyle: {   
+                //通常情况下：
+                normal:{  
+　　　　　　　　　　　　//每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                    color: 'rgb(0,229,235)'
+                }
+                
+            },
+            data:[12.6, 5.9, 9.0, 26.4, 28.7, 10.7, 15.6, 12.2, 8.7, 18.8, 3.3, 15.6],
+           
+        },
+		{
+            name:'PM2.5',
+             type:'line',
+			yAxisIndex: 2,
+            data:[32.0, 34.9, 37.0, 43.2, 35.6, 36.7, 36.4, 43.3, 25.6, 46.7, 35.6, 36.4],
+            
+        },
+		{
+            name:'PM10',
+            type:'line',
+			yAxisIndex: 2,
+            data:[62.0, 44.9, 57.0, 43.2, 55.6, 76.7, 66.4, 53.3, 45.6, 76.7, 55.6, 46.4],
+            
+        },
+		{
+            name:'TVOC',
+            type:'line',
+			
+            data:[282.0, 272.0, 266.0, 260.2, 255.6, 276.7, 256.4, 223.3, 225.6, 276.7, 235.6, 206.4],
+            
+        },
+    ]
+};
+
+        // 为echarts对象加载数据 
+        myChart.setOption(option); 
+		window.addEventListener("resize",function(){
+    myChart.resize();
+});
+    </script>
+  
+<script src="${request.contextPath}/statics/libs/echarts.js"></script>
+<!-- 
+<script src="${request.contextPath}/statics/js/modules/realtime/rtdata.js?_${.now?long}"></script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/laydate/laydate.js"></script>
+ <script type="text/javascript" src="${request.contextPath}/statics/js/laydate/time.js"></script>-->
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+`<!DOCTYPE html>
+<html>
+<head>
+<title>实时数据图表</title>
+<#include "/header.html">
+</head>
+<body>
+
+
+
+
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+	
+		
+		  <div class="grid-btn">
+		
+<!-- 		   <label for="mn" class="col-sm-2 control-lable1" style="width:80px;margin:8px auto auto auto;">监测站:</label> -->
+			<div class="form-group col-sm-2">
+				<select class="form-control" id="MN" v-model="q.mn" v-on:focus="getStationInfo">
+					
+				    <option v-for="option in q.stationInfos" v-bind:value="option.siteNum">
+					    {{ option.siteNum }}
+  					</option>
+			    </select>
+			</div>
+			
+<!-- 			<label for="start" class="col-sm-2 control-lable" style="width:100px;margin:8px auto auto auto;">开始时间：</label> -->
+			<div class="form-group col-sm-2">
+				<input type="text" class="laydate-icon" id="start" v-model="q.begin" v-on:focus="getBegin" >
+			</div>
+			
+<!-- 			<label for="end" class="col-sm-2 control-lable" style="width:100px;margin:8px auto auto auto;">结束时间：</label> -->
+			<div class="form-group col-sm-2">
+				<input type="text" class="laydate-icon" id="end" v-model="q.end" v-on:focus="getEnd" >
+			</div>
+			
+			<a class="btn btn-default" @click="query">查询</a>
+	</div>   
+
+    </div>             
+  
+  <div  class="picture"  id="main" style=" width:90%; height:500px; margin:20px;" ></div>  <!-- 显示折图 -->  
+ 
+</div>   
+    
+
+<script src="${request.contextPath}/statics/js/modules/realtime/rtchart.js"></script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/laydate/laydate.js"></script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/laydate/time.js"></script>
+
+</body>
+</html>
